@@ -83,7 +83,16 @@ class Deck():
             self.hand.append(self.cards.pop())
 
     def take_turn(self):
-        ...
+        self.draw(1)
+
+        lands = [i for i in self.hand if i.t == Type.LAND]
+        if len(lands) > 0:
+            self.hands.remove(lands[0])
+            self.lands += 1
+
+        m = self.mana
+
+        
 
 d = Deck()
 d.draw(7)
