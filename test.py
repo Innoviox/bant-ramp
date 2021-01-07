@@ -17,17 +17,18 @@ class Card:
     name: str
 
     def play(self, deck):
+        print("Playing", self.name)
         if self.t == Type.WINCON:
             deck.wincons += 1
         elif self.t == Type.RAMPER:
-            deck.ramps += 1
+            deck.ramps += self.value
         elif self.t == Type.LAND:
             deck.lands += 1
         elif self.t == Type.SEARCHER:
             # todo
             ...
         elif self.t == Type.UNTAPPER:
-            deck.untaps += 1
+            deck.untaps += self.value
 
 class Deck():
     def __init__(self):
@@ -46,14 +47,14 @@ class Deck():
         self.cards.append(Card(t=Type.WINCON, cost=10, value=-1, name="Kozilek, Butcher of Truth"))
         self.cards.append(Card(t=Type.WINCON, cost=10, value=-1, name="Ulamog, the Ceaseless Hunger"))
         
-        self.cards.append(Card(t=Type.WINCON, cost=4, value=2, name="Dawn's Reflection"))
-        self.cards.append(Card(t=Type.WINCON, cost=4, value=2, name="Market Festival"))
-        self.cards.append(Card(t=Type.WINCON, cost=1, value=1, name="Utopia Sprawl"))
-        self.cards.append(Card(t=Type.WINCON, cost=1, value=1, name="Utopia Sprawl"))
-        self.cards.append(Card(t=Type.WINCON, cost=2, value=1, name="Fertile Ground"))
-        self.cards.append(Card(t=Type.WINCON, cost=2, value=1, name="Fertile Ground"))
-        self.cards.append(Card(t=Type.WINCON, cost=2, value=1, name="Fertile Ground"))
-        self.cards.append(Card(t=Type.WINCON, cost=2, value=1, name="Fertile Ground"))
+        self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Dawn's Reflection"))
+        self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Market Festival"))
+        self.cards.append(Card(t=Type.RAMPER, cost=1, value=1, name="Utopia Sprawl"))
+        self.cards.append(Card(t=Type.RAMPER, cost=1, value=1, name="Utopia Sprawl"))
+        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
+        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
+        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
+        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
 
         for _ in range(20): # todo
             self.cards.append(Card(t=Type.LAND, cost=0, value=1, name="Forest"))
@@ -97,19 +98,19 @@ class Deck():
 
     def take_turn(self):
         self.draw(1)
-
-        self.play_card(Type.LAND)
-
+        print([i.name for i in self.hand])
+        
+        self.play_card(Type.LAND, 0)
         m = self.mana
 
         for t in [Type.UNTAPPER, Type.RAMPER]:
             c = -1
             while c != 0 and m > 0:
-                c = self.play_card(t)
+                c = self.play_card(t, m)
                 m -= c
 
-    def play_card(self, t):
-        cards = [i for i in self.hand if i.t == t]
+    def play_card(self, t, m):
+        cards = [i for i in self.hand if i.t == t and i.cost <= m]
         if len(cards) > 0:
             self.hand.remove(cards[0])
             cards[0].play(self)
@@ -122,7 +123,7 @@ class Deck():
 
         for i in range(10):
             self.take_turn()
-            print(self.mana)
+            print(self.mana, self.lands, self.ramps, self.untaps)
 
 d = Deck()
 d.play_game()
