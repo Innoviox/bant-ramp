@@ -27,8 +27,26 @@ class Card:
         elif self.t == Type.LAND:
             deck.lands += 1
         elif self.t == Type.SEARCHER:
-            # todo
-            ...
+            if self.name in ["Chord of Calling", "Wargate"]:
+                # todo
+                ...
+            elif self.name == "Gifts Ungiven":
+                toFind = min([deck.wincons, deck.untaps, deck.ramps])
+                if toFind == deck.untaps:
+                    deck.search(Type.UNTAPPER, self.value)
+                elif toFind == deck.ramps:
+                    deck.search(Type.RAMPER, self.value)
+                else:
+                    deck.search(Type.WINCON, self.value)
+            elif self.name in ["Eladamri's Call", "Signal the Clans"]
+                toFind = min([deck.wincons, deck.untaps])
+                if toFind == deck.untaps:
+                    deck.search(Type.UNTAPPER, self.value)
+                else:
+                    deck.search(Type.WINCON, self.value)
+            elif self.name == "Tooth and Nail":
+                # todo
+                ...
         elif self.t == Type.UNTAPPER:
             deck.untaps += self.value
 
@@ -114,9 +132,10 @@ class Deck():
     def play_card(self, t, m):
         cards = [i for i in self.hand if i.t == t and i.cost <= m]
         if len(cards) > 0:
-            self.hand.remove(cards[0])
-            cards[0].play(self)
-            return cards[0].cost
+            c = cards[0]
+            self.hand.remove(c)
+            c.play(self)
+            return c.cost
         return 0
 
     def play_game(self):
