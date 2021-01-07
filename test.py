@@ -98,12 +98,12 @@ class Deck():
 
     def take_turn(self):
         self.draw(1)
-        print([i.name for i in self.hand])
+        # print([i.name for i in self.hand])
         
         self.play_card(Type.LAND, 0)
         m = self.mana
 
-        for t in [Type.UNTAPPER, Type.RAMPER]:
+        for t in [Type.UNTAPPER, Type.RAMPER, Type.WINCON]:
             c = -1
             while c != 0 and m > 0:
                 c = self.play_card(t, m)
@@ -123,7 +123,7 @@ class Deck():
 
         for i in range(10):
             self.take_turn()
-            print(self.mana, self.lands, self.ramps, self.untaps)
+            print(self.mana, self.lands, self.ramps, self.untaps, self.wincons)
 
 d = Deck()
 d.play_game()
