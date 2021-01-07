@@ -31,6 +31,9 @@ class Card:
 
 class Deck():
     def __init__(self):
+        self.initialize()
+
+    def initialize(self):
         self.cards = []
 
         self.cards.append(Card(t=Type.WINCON, cost=8, value=-1, name="Avacyn, Angel of Hope"))
@@ -99,6 +102,12 @@ class Deck():
 
         m = self.mana
 
+        for t in [Type.UNTAPPER, Type.RAMPER]:
+            c = -1
+            while c != 0 and m > 0:
+                c = self.play_card(t)
+                m -= c
+
     def play_card(self, t):
         cards = [i for i in self.hand if i.t == t]
         if len(cards) > 0:
@@ -107,6 +116,13 @@ class Deck():
             return cards[0].cost
         return 0
 
+    def play_game(self):
+        self.initialize()
+        self.draw(7)
+
+        for i in range(10):
+            self.take_turn()
+            print(self.mana)
+
 d = Deck()
-d.draw(7)
-print([i.name for i in d.hand])
+d.play_game()
