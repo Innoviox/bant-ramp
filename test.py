@@ -150,17 +150,16 @@ class Deck():
         if len(cards) > 0:
             for c in cards:
                 if c.name in ["Chord of Calling", "Wargate"]:
-                    print("CHORDS")
                     toFind = min([self.wincons, self.untaps])
-                    if toFind == self.untaps:
+                    if toFind == self.untaps and self.mana < 10:
                         found = [i for i in self.cards if i.t == Type.UNTAPPER]
                     else:
                         found = [i for i in self.cards if i.t == Type.WINCON]
                     minCost = min(found, key=lambda i: i.cost)
-                    print("\tFound", minCost, m)
                     if minCost.cost + 3 <= m:
                         self.hand.remove(c)
                         c.play(self)
+                        print("\t =>", minCost.name)
                         self.cards.remove(minCost)
                         minCost.play(self)
                         return minCost.cost + 3
