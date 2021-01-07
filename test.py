@@ -16,11 +16,11 @@ class Card:
     value: int
     name: str
 
-    def play(self, deck):
+    def play(self, deck, cast=True):
         print("Playing", self.name)
         if self.t == Type.WINCON:
             deck.wincons += 1
-            if self.name == "Kozilek, Butcher of Truth":
+            if self.name == "Kozilek, Butcher of Truth" and cast:
                 deck.draw(4)
         elif self.t == Type.RAMPER:
             deck.ramps += self.value
@@ -46,7 +46,12 @@ class Card:
                     deck.search(Type.WINCON, self.value)
             elif self.name == "Tooth and Nail":
                 # todo
-                ...
+                deck.search(Type.WINCON, self.value)
+                cards = [i for i in deck.hand if i.t == Type.WINCON]
+                for i in cards[:2]:
+                    i.play(deck, False)
+                    deck.hand.remove(i)
+                
         elif self.t == Type.UNTAPPER:
             deck.untaps += self.value
 
