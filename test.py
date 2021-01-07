@@ -1,6 +1,7 @@
 from enum import Enum
 from dataclasses import dataclass
 from random import shuffle
+from matplotlib import pyplot as plt
 
 class Type(Enum):
     WINCON = 0
@@ -17,7 +18,7 @@ class Card:
     name: str
 
     def play(self, deck, cast=True):
-        print("Playing", self.name)
+        # print("Playing", self.name)
         if self.t == Type.WINCON:
             deck.wincons += 1
             if self.name == "Kozilek, Butcher of Truth" and cast:
@@ -126,7 +127,7 @@ class Deck():
         if add:
             for i in range(n):
                 if i < len(c):
-                    print("\tFound", c[i].name)
+                    # print("\tFound", c[i].name)
                     self.hand.append(c[i])
                     self.cards.remove(c[i])
         else:
@@ -134,7 +135,7 @@ class Deck():
 
     def take_turn(self):
         self.draw(1)
-        print([i.name for i in self.hand])
+        # print([i.name for i in self.hand])
         
         self.play_card(Type.LAND, 0)
         m = self.mana
@@ -155,14 +156,15 @@ class Deck():
                         found = [i for i in self.cards if i.t == Type.UNTAPPER]
                     else:
                         found = [i for i in self.cards if i.t == Type.WINCON]
-                    minCost = min(found, key=lambda i: i.cost)
-                    if minCost.cost + 3 <= m:
-                        self.hand.remove(c)
-                        c.play(self)
-                        print("\t =>", minCost.name)
-                        self.cards.remove(minCost)
-                        minCost.play(self)
-                        return minCost.cost + 3
+                    if found:
+                        minCost = min(found, key=lambda i: i.cost)
+                        if minCost.cost + 3 <= m:
+                            self.hand.remove(c)
+                            c.play(self)
+                            # print("\t =>", minCost.name)
+                            self.cards.remove(minCost)
+                            minCost.play(self)
+                            return minCost.cost + 3
                 else:
                     self.hand.remove(c)
                     c.play(self)
@@ -173,12 +175,24 @@ class Deck():
         self.initialize()
         self.draw(7)
 
+        mana, wincons = [], []
+
         for i in range(10):
             self.take_turn()
-            print(self.mana, self.lands, self.ramps, self.untaps, self.wincons)
 
+            mana.append(self.mana)
+            wincons.append(self.wincons)
+
+        return mana, wincons
     
         
 
 d = Deck()
-d.play_game()
+
+ms = []
+for _ in range(200):
+    m, w = d.play_game()
+
+    # plt.plot(range(0, 10), m)
+
+# plt.show()
