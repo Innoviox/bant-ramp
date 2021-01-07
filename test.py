@@ -121,16 +121,20 @@ class Deck():
         for _ in range(n):
             self.hand.append(self.cards.pop())
 
-    def search(self, t, n):
+    def search(self, t, n, add=True):
         c = [i for i in self.cards if i.t == t]
-        for i in range(n):
-            print("\tFound", c[i].name)
-            self.hand.append(c[i])
-            self.cards.remove(c[i])
+        if add:
+            for i in range(n):
+                if i < len(c):
+                    print("\tFound", c[i].name)
+                    self.hand.append(c[i])
+                    self.cards.remove(c[i])
+        else:
+            return c[:n]
 
     def take_turn(self):
         self.draw(1)
-        # print([i.name for i in self.hand])
+        print([i.name for i in self.hand])
         
         self.play_card(Type.LAND, 0)
         m = self.mana
@@ -144,10 +148,26 @@ class Deck():
     def play_card(self, t, m):
         cards = [i for i in self.hand if i.t == t and i.cost <= m]
         if len(cards) > 0:
-            c = cards[0]
-            self.hand.remove(c)
-            c.play(self)
-            return c.cost
+            for c in cards:
+                if c.name in ["Chord of Calling", "Wargate"]:
+                    print("CHORDS")
+                    toFind = min([self.wincons, self.untaps])
+                    if toFind == self.untaps:
+                        found = [i for i in self.cards if i.t == Type.UNTAPPER]
+                    else:
+                        found = [i for i in self.cards if i.t == Type.WINCON]
+                    minCost = min(found, key=lambda i: i.cost)
+                    print("\tFound", minCost, m)
+                    if minCost.cost + 3 <= m:
+                        self.hand.remove(c)
+                        c.play(self)
+                        self.cards.remove(minCost)
+                        minCost.play(self)
+                        return minCost.cost + 3
+                else:
+                    self.hand.remove(c)
+                    c.play(self)
+                    return c.cost
         return 0
 
     def play_game(self):
