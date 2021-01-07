@@ -20,6 +20,8 @@ class Card:
         print("Playing", self.name)
         if self.t == Type.WINCON:
             deck.wincons += 1
+            if self.name == "Kozilek, Butcher of Truth":
+                deck.draw(4)
         elif self.t == Type.RAMPER:
             deck.ramps += self.value
         elif self.t == Type.LAND:
@@ -103,11 +105,11 @@ class Deck():
         self.play_card(Type.LAND, 0)
         m = self.mana
 
-        for t in [Type.UNTAPPER, Type.RAMPER, Type.WINCON]:
+        for t in [Type.UNTAPPER, Type.RAMPER, Type.WINCON, Type.SEARCHER]:
             c = -1
             while c != 0 and m > 0:
                 c = self.play_card(t, m)
-                m -= c
+                m -= c        
 
     def play_card(self, t, m):
         cards = [i for i in self.hand if i.t == t and i.cost <= m]
