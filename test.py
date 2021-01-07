@@ -38,7 +38,7 @@ class Card:
                     deck.search(Type.RAMPER, self.value)
                 else:
                     deck.search(Type.WINCON, self.value)
-            elif self.name in ["Eladamri's Call", "Signal the Clans"]
+            elif self.name in ["Eladamri's Call", "Signal the Clans"]:
                 toFind = min([deck.wincons, deck.untaps])
                 if toFind == deck.untaps:
                     deck.search(Type.UNTAPPER, self.value)
@@ -116,6 +116,13 @@ class Deck():
         for _ in range(n):
             self.hand.append(self.cards.pop())
 
+    def search(self, t, n):
+        c = [i for i in self.cards if i.t == t]
+        for i in range(n):
+            print("\tFound", c[i].name)
+            self.hand.append(c[i])
+            self.cards.remove(c[i])
+
     def take_turn(self):
         self.draw(1)
         # print([i.name for i in self.hand])
@@ -145,6 +152,9 @@ class Deck():
         for i in range(10):
             self.take_turn()
             print(self.mana, self.lands, self.ramps, self.untaps, self.wincons)
+
+    
+        
 
 d = Deck()
 d.play_game()
