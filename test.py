@@ -17,7 +17,17 @@ class Card:
     name: str
 
     def play(self, deck):
-        ...
+        if self.t == Type.WINCON:
+            deck.wincons += 1
+        elif self.t == Type.RAMPER:
+            deck.ramps += 1
+        elif self.t == Type.LAND:
+            deck.lands += 1
+        elif self.t == Type.SEARCHER:
+            # todo
+            ...
+        elif self.t == Type.UNTAPPER:
+            deck.untaps += 1
 
 class Deck():
     def __init__(self):
@@ -85,14 +95,17 @@ class Deck():
     def take_turn(self):
         self.draw(1)
 
-        lands = [i for i in self.hand if i.t == Type.LAND]
-        if len(lands) > 0:
-            self.hands.remove(lands[0])
-            self.lands += 1
+        self.play_card(Type.LAND)
 
         m = self.mana
 
-        
+    def play_card(self, t):
+        cards = [i for i in self.hand if i.t == t]
+        if len(cards) > 0:
+            self.hand.remove(cards[0])
+            cards[0].play(self)
+            return cards[0].cost
+        return 0
 
 d = Deck()
 d.draw(7)
