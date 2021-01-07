@@ -2,6 +2,7 @@ from enum import Enum
 from dataclasses import dataclass
 from random import shuffle
 from matplotlib import pyplot as plt
+import statistics as st
 
 class Type(Enum):
     WINCON = 0
@@ -190,9 +191,18 @@ class Deck():
 d = Deck()
 
 ms = []
+ws = []
 for _ in range(200):
     m, w = d.play_game()
+    ms.append(m)
+    ws.append(w)
 
     # plt.plot(range(0, 10), m)
 
 # plt.show()
+
+avgs = [st.mean([i[j] for i in ms]) for j in range(10)]
+print(avgs)
+
+avgs = [st.mean([i[j] for i in ws]) for j in range(10)]
+print(avgs)
