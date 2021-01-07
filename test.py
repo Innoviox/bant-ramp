@@ -55,3 +55,17 @@ class Deck():
             self.cards.append(t=Type.UNTAPPER, cost=1, value=1, name="Arbor Elf")
             self.cards.append(t=Type.UNTAPPER, cost=2, value=1, name="Kiora's Follower")
             self.cards.append(t=Type.UNTAPPER, cost=2, value=1, name="Voyaging Satyr")
+
+        self.wincons = 0
+        self.lands = 0
+        self.untaps = 0
+        self.ramps = 0
+
+        self.turn = 0
+
+    @property
+    def mana(self):
+        return self.lands - 1 + (self.ramps + 1) * (self.untaps + 1)
+
+    def take_turn(self):
+        ...
