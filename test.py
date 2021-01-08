@@ -145,7 +145,7 @@ class Deck():
         self.play_card(Type.LAND, 0)
         m = self.mana
 
-        for t in [Type.UNTAPPER, Type.RAMPER, Type.WINCON, Type.SEARCHER]:
+        for t in [Type.WINCON, Type.UNTAPPER, Type.RAMPER, Type.SEARCHER]:
             c = -1
             while c != 0 and m > 0:
                 c = self.play_card(t, m)
@@ -198,11 +198,16 @@ d = Deck(out=False)
 
 ms = []
 ws = []
+first_wincons = []
 for _ in range(1000):
     m, w = d.play_game()
 
     ms.append(m)
     ws.append(w)
+    first_wincons.append(len(w) - w[::-1].index(0) + 1)
+
+nums = [first_wincons.count(i) / len(first_wincons) for i in range(1, 10)]
+print(nums)
 
 plt.boxplot(list(zip(*ms)))
 plt.show()
