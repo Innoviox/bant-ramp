@@ -1,0 +1,61 @@
+['Arbor Elf', 'Forest', 'Market Festival', "Kiora's Follower", "Dawn's Reflection", 'Utopia Sprawl', 'Gifts Ungiven', 'Arbor Elf']
+Playing Forest
+Playing Arbor Elf
+2 0 1 1 0
+['Market Festival', "Kiora's Follower", "Dawn's Reflection", 'Utopia Sprawl', 'Gifts Ungiven', 'Arbor Elf', 'Voyaging Satyr']
+Playing Kiora's Follower
+3 0 1 2 0
+['Market Festival', "Dawn's Reflection", 'Utopia Sprawl', 'Gifts Ungiven', 'Arbor Elf', 'Voyaging Satyr', 'Signal the Clans']
+Playing Arbor Elf
+Playing Voyaging Satyr
+5 0 1 4 0
+['Market Festival', "Dawn's Reflection", 'Utopia Sprawl', 'Gifts Ungiven', 'Signal the Clans', 'Forest']
+Playing Forest
+Playing Market Festival
+Playing Utopia Sprawl
+21 0 2 4 3
+["Dawn's Reflection", 'Gifts Ungiven', 'Signal the Clans', 'Chord of Calling']
+Playing Dawn's Reflection
+Playing Gifts Ungiven
+	Found Kozilek, Butcher of Truth
+	Found Ulamog, the Ceaseless Hunger
+Playing Signal the Clans
+	Found Griselbrand
+Playing Chord of Calling
+	 => Carnage Tyrant
+Playing Carnage Tyrant
+31 1 2 4 5
+['Kozilek, Butcher of Truth', 'Ulamog, the Ceaseless Hunger', 'Griselbrand', 'Utopia Sprawl']
+Playing Utopia Sprawl
+Playing Kozilek, Butcher of Truth
+Playing Ulamog, the Ceaseless Hunger
+Playing Griselbrand
+36 4 2 4 6
+["Kiora's Follower", 'Gifts Ungiven', 'Emrakul, the Aeons Torn', 'Gifts Ungiven', 'Iona, Shield of Emeria']
+Playing Kiora's Follower
+Playing Emrakul, the Aeons Torn
+Playing Iona, Shield of Emeria
+Playing Gifts Ungiven
+	Found Arbor Elf
+	Found Voyaging Satyr
+Playing Gifts Ungiven
+	Found Voyaging Satyr
+	Found Voyaging Satyr
+43 6 2 5 6
+['Arbor Elf', 'Voyaging Satyr', 'Voyaging Satyr', 'Voyaging Satyr', 'Gifts Ungiven']
+Playing Arbor Elf
+Playing Voyaging Satyr
+Playing Voyaging Satyr
+Playing Voyaging Satyr
+Playing Gifts Ungiven
+	Found Fertile Ground
+	Found Fertile Ground
+71 6 2 9 6
+['Fertile Ground', 'Fertile Ground', 'Forest']
+Playing Forest
+Playing Fertile Ground
+Playing Fertile Ground
+92 6 3 9 8
+['Forest']
+Playing Forest
+93 6 4 9 8

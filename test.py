@@ -18,8 +18,8 @@ class Card:
     value: int
     name: str
 
-    def play(self, deck, cast=True):
-        # print("Playing", self.name)
+    def play(self, deck, cast=True, out=True):
+        if out: print("Playing", self.name)
         if self.t == Type.WINCON:
             deck.wincons += 1
             if self.name == "Kozilek, Butcher of Truth" and cast:
@@ -51,17 +51,17 @@ class Card:
                 deck.search(Type.WINCON, self.value)
                 cards = [i for i in deck.hand if i.t == Type.WINCON]
                 for i in cards[:2]:
-                    i.play(deck, False)
+                    i.play(deck, cast=False, out=out)
                     deck.hand.remove(i)
                 
         elif self.t == Type.UNTAPPER:
             deck.untaps += self.value
 
 class Deck():
-    def __init__(self):
-        self.initialize()
+    def __init__(self, out=True):
+        self.out = out
 
-    def initialize(self):
+    def initialize(self, wincons, rampers, lands, searchers, untappers):
         self.cards = []
 
         self.cards.append(Card(t=Type.WINCON, cost=8, value=-1, name="Avacyn, Angel of Hope"))
@@ -83,7 +83,7 @@ class Deck():
         self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
         self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
 
-        for _ in range(20): # todo
+        for _ in range(lands):
             self.cards.append(Card(t=Type.LAND, cost=0, value=1, name="Forest"))
 
         self.cards.append(Card(t=Type.SEARCHER, cost=-1, value=1, name="Chord of Calling"))
@@ -102,6 +102,8 @@ class Deck():
             self.cards.append(Card(t=Type.UNTAPPER, cost=1, value=1, name="Arbor Elf"))
             self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name="Kiora's Follower"))
             self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name="Voyaging Satyr"))
+        r = rampers - 6
+        #for i in range(
 
         shuffle(self.cards)
 
@@ -128,7 +130,7 @@ class Deck():
         if add:
             for i in range(n):
                 if i < len(c):
-                    # print("\tFound", c[i].name)
+                    if self.out: print("\tFound", c[i].name)
                     self.hand.append(c[i])
                     self.cards.remove(c[i])
         else:
@@ -136,7 +138,7 @@ class Deck():
 
     def take_turn(self):
         self.draw(1)
-        # print([i.name for i in self.hand])
+        if self.out: print([i.name for i in self.hand])
         
         self.play_card(Type.LAND, 0)
         m = self.mana
@@ -161,25 +163,27 @@ class Deck():
                         minCost = min(found, key=lambda i: i.cost)
                         if minCost.cost + 3 <= m:
                             self.hand.remove(c)
-                            c.play(self)
-                            # print("\t =>", minCost.name)
+                            c.play(self, out=self.out)
+                            if self.out: print("\t =>", minCost.name)
                             self.cards.remove(minCost)
-                            minCost.play(self)
+                            minCost.play(self, out=self.out)
                             return minCost.cost + 3
                 else:
                     self.hand.remove(c)
-                    c.play(self)
+                    c.play(self, out=self.out)
                     return c.cost
         return 0
 
     def play_game(self):
-        self.initialize()
+        self.initialize(9, 8, 20, 11, 12)
         self.draw(7)
 
         mana, wincons = [], []
 
         for i in range(10):
             self.take_turn()
+
+            if self.out: print(self.mana, self.wincons, self.lands, self.untaps, self.ramps)
 
             mana.append(self.mana)
             wincons.append(self.wincons)
@@ -188,18 +192,19 @@ class Deck():
     
         
 
-d = Deck()
+d = Deck(out=False)
 
 ms = []
 ws = []
-for _ in range(200):
+for _ in range(1000):
     m, w = d.play_game()
+
     ms.append(m)
     ws.append(w)
 
-    # plt.plot(range(0, 10), m)
+    plt.plot(range(0, 10), m)
 
-# plt.show()
+plt.show()
 
 avgs = [st.mean([i[j] for i in ms]) for j in range(10)]
 print(avgs)
