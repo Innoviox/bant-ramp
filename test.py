@@ -86,23 +86,25 @@ class Deck():
                                 (9, -1, "Iona, Shield of Emeria"),
                                 (7, -1, "Gaea's Revenge")), wincons):
             self.cards.append(Card(t=Type.WINCON, cost=i[0], value=i[1], name=i[2]))
-        
-        self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Dawn's Reflection"))
-        self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Market Festival"))
-        self.cards.append(Card(t=Type.RAMPER, cost=1, value=1, name="Utopia Sprawl"))
-        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
 
-        r = rampers - 4
-        if r > 0:
-            self.cards.append(Card(t=Type.RAMPER, cost=1, value=1, name="Utopia Sprawl"))
-            r -= 1
-        for i in range(min(3, r)):
-            self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
-            r -= 1
-
-        for _ in range(lands):
-            self.cards.append(Card(t=Type.LAND, cost=0, value=1, name="Forest"))
-
+        for i in random.sample(((4, 2, "Dawn's Reflection"),
+                                (4, 2, "Market Festival"),
+                                (1, 1, "Utopia Sprawl"),
+                                (2, 1, "Fertile Ground"),
+                                (4, 2, "Dawn's Reflection"),
+                                (4, 2, "Market Festival"),
+                                (1, 1, "Utopia Sprawl"),
+                                (2, 1, "Fertile Ground"),
+                                (4, 2, "Dawn's Reflection"),
+                                (4, 2, "Market Festival"),
+                                (1, 1, "Utopia Sprawl"),
+                                (2, 1, "Fertile Ground"),
+                                (4, 2, "Dawn's Reflection"),
+                                (4, 2, "Market Festival"),
+                                (1, 1, "Utopia Sprawl"),
+                                (2, 1, "Fertile Ground")), rampers):
+            self.cards.append(Card(t=Type.RAMPER, cost=i[0], value=i[1], name=i[2]))
+    
         for i in random.sample(((-1, 1, 'Chord of Calling'),
                                 (-1, 1, 'Wargate'),
                                 (4, 2, 'Gifts Ungiven'),
@@ -123,14 +125,23 @@ class Deck():
                                 (9, 2, 'Tooth and Nail')), searchers):
             self.cards.append(Card(t=Type.SEARCHER, cost=i[0], value=i[1], name=i[2]))
 
-        for i in range(4):
-            self.cards.append(Card(t=Type.UNTAPPER, cost=1, value=1, name="Arbor Elf"))
-        r = untappers - 6
-        for name in ["Kiora's Follower", "Voyaging Satyr"]:
-            self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name=name))
-            for i in range(min(3, r)):
-                self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name=name))
-                r -= 1
+        for i in random.sample(((1, 1, "Arbor Elf"),
+                                (2, 1, "Kiora's Follower"),
+                                (2, 1, "Voyaging Satyr"),
+                                (1, 1, "Arbor Elf"),
+                                (2, 1, "Kiora's Follower"),
+                                (2, 1, "Voyaging Satyr"),
+                                (1, 1, "Arbor Elf"),
+                                (2, 1, "Kiora's Follower"),
+                                (2, 1, "Voyaging Satyr"),
+                                (1, 1, "Arbor Elf"),
+                                (2, 1, "Kiora's Follower"),
+                                (2, 1, "Voyaging Satyr")), untappers):
+            self.cards.append(Card(t=Type.UNTAPPER, cost=i[0], value=i[1], name=i[2]))
+
+        for _ in range(lands):
+            self.cards.append(Card(t=Type.LAND, cost=0, value=1, name="Forest"))
+
 
         random.shuffle(self.cards)
 
@@ -223,17 +234,15 @@ def change(config):
     return tuple(config)
 
 base = [9, 8, 20, 11, 12]
-
 results = {}
 
-for i in range(10):
-    b = change(base)
+for b in (tuple(base), (16, 8, 20, 8, 8)):
     d = Deck(config=b, out=False)
 
     ms = []
     ws = []
     first_wincons = []
-    for _ in range(1000):
+    for _ in range(10000):
         m, w = d.play_game()
 
         ms.append(m)
@@ -248,3 +257,5 @@ for i in range(10):
 
     print(b)
     print("\t", nums, "\n\t", avg_ms, "\n\t", avg_ws)
+
+print(max(results, key=lambda i: results[i][0][3]))
