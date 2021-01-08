@@ -67,15 +67,19 @@ class Deck():
         
         self.cards = []
 
-        self.cards.append(Card(t=Type.WINCON, cost=8, value=-1, name="Avacyn, Angel of Hope"))
-        self.cards.append(Card(t=Type.WINCON, cost=6, value=-1, name="Carnage Tyrant"))
-        self.cards.append(Card(t=Type.WINCON, cost=6, value=-1, name="Dragonlord Dromoka"))
-        self.cards.append(Card(t=Type.WINCON, cost=15, value=-1, name="Emrakul, the Aeons Torn"))
-        self.cards.append(Card(t=Type.WINCON, cost=8, value=-1, name="Griselbrand"))
-        self.cards.append(Card(t=Type.WINCON, cost=9, value=-1, name="Inkwell Leviathan"))
-        self.cards.append(Card(t=Type.WINCON, cost=9, value=-1, name="Iona, Shield of Emeria"))
-        self.cards.append(Card(t=Type.WINCON, cost=10, value=-1, name="Kozilek, Butcher of Truth"))
-        self.cards.append(Card(t=Type.WINCON, cost=10, value=-1, name="Ulamog, the Ceaseless Hunger"))
+        for i in random.sample(((10, -1, 'Ulamog, the Ceaseless Hunger'),
+                                (8, -1, 'Avacyn, Angel of Hope'),
+                                (6, -1, 'Dragonlord Dromoka'),
+                                (15, -1, 'Emrakul, the Aeons Torn'),
+                                (6, -1, 'Carnage Tyrant'),
+                                (9, -1, 'Iona, Shield of Emeria'),
+                                (10, -1, 'Kozilek, Butcher of Truth'),
+                                (8, -1, 'Griselbrand'),
+                                (9, -1, 'Inkwell Leviathan'),
+                                (8, -1, 'Akroma, Angel of Fury'),
+                                (8, -1, 'Zetalpa, Primal Dawn'),
+                                (9, -1, 'Void Winnower')), wincons):
+            self.cards.append(Card(t=Type.WINCON, cost=i[0], value=i[1], name=i[2]))
         
         self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Dawn's Reflection"))
         self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Market Festival"))
@@ -186,6 +190,7 @@ class Deck():
 
     def play_game(self):
         self.initialize()
+        #print([(i.cost, i.value, i.name) for i in self.cards if i.t == Type.WINCON])
         self.draw(7)
 
         mana, wincons = [], []
