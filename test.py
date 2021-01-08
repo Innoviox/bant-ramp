@@ -80,11 +80,15 @@ class Deck():
         self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Dawn's Reflection"))
         self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Market Festival"))
         self.cards.append(Card(t=Type.RAMPER, cost=1, value=1, name="Utopia Sprawl"))
-        self.cards.append(Card(t=Type.RAMPER, cost=1, value=1, name="Utopia Sprawl"))
         self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
-        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
-        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
-        self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
+
+        r = rampers - 4
+        if r > 0:
+            self.cards.append(Card(t=Type.RAMPER, cost=1, value=1, name="Utopia Sprawl"))
+            r -= 1
+        for i in range(min(3, r)):
+            self.cards.append(Card(t=Type.RAMPER, cost=2, value=1, name="Fertile Ground"))
+            r -= 1
 
         for _ in range(lands):
             self.cards.append(Card(t=Type.LAND, cost=0, value=1, name="Forest"))
