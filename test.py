@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import random
 from matplotlib import pyplot as plt
 import statistics as st
+import tqdm
 
 class Type(Enum):
     WINCON = 0
@@ -34,15 +35,15 @@ class Card:
                 ...
             elif self.name == "Gifts Ungiven":
                 toFind = min([deck.wincons, deck.untaps, deck.ramps])
-                if toFind == deck.untaps:
+                if toFind == deck.untaps and deck.mana < 10:
                     deck.search(Type.UNTAPPER, self.value)
-                elif toFind == deck.ramps:
+                elif toFind == deck.ramps and deck.mana < 10:
                     deck.search(Type.RAMPER, self.value)
                 else:
                     deck.search(Type.WINCON, self.value)
             elif self.name in ["Eladamri's Call", "Signal the Clans"]:
                 toFind = min([deck.wincons, deck.untaps])
-                if toFind == deck.untaps:
+                if toFind == deck.untaps and deck.mana < 10:
                     deck.search(Type.UNTAPPER, self.value)
                 else:
                     deck.search(Type.WINCON, self.value)
@@ -218,7 +219,7 @@ class Deck():
 
         mana, wincons = [], []
 
-        for i in range(10):
+        for i in range(6):
             self.take_turn()
 
             if self.out: print(self.mana, self.wincons, self.lands, self.untaps, self.ramps)
@@ -235,14 +236,18 @@ def change(config):
 
 base = [9, 8, 20, 11, 12]
 results = {}
-
-for b in (tuple(base), (16, 8, 20, 8, 8)):
+'''( 9,  8, 20, 11, 12),
+          (10,  8, 20, 10, 12),
+          (12,  8, 20,  8, 12),
+          (13,  8, 19,  8, 12),
+          '''
+for b in ((14,  8, 18,  8, 12),):
     d = Deck(config=b, out=False)
 
     ms = []
     ws = []
     first_wincons = []
-    for _ in range(10000):
+    for _ in tqdm.trange(1000000):
         m, w = d.play_game()
 
         ms.append(m)
