@@ -104,8 +104,15 @@ class Deck():
                                 (4, 2, 'Gifts Ungiven'),
                                 (4, 2, 'Gifts Ungiven'),
                                 (2, 1, "Eladamri's Call"),
+                                (2, 1, "Eladamri's Call"),
+                                (2, 1, "Eladamri's Call"),
+                                (2, 1, "Eladamri's Call"),
                                 (2, 1, 'Signal the Clans'),
                                 (2, 1, 'Signal the Clans'),
+                                (2, 1, 'Signal the Clans'),
+                                (2, 1, 'Signal the Clans'),
+                                (9, 2, 'Tooth and Nail'),
+                                (9, 2, 'Tooth and Nail'),
                                 (9, 2, 'Tooth and Nail'),
                                 (9, 2, 'Tooth and Nail')), searchers):
             self.cards.append(Card(t=Type.SEARCHER, cost=i[0], value=i[1], name=i[2]))
@@ -190,7 +197,6 @@ class Deck():
 
     def play_game(self):
         self.initialize()
-        #print([(i.cost, i.value, i.name) for i in self.cards if i.t == Type.WINCON])
         self.draw(7)
 
         mana, wincons = [], []
@@ -205,28 +211,33 @@ class Deck():
 
         return mana, wincons
     
-        
+def change(config):
+    config[random.randrange(0, len(config))] += 1
+    config[random.randrange(0, len(config))] -= 1
+    return tuple(config)
 
-d = Deck(config=(9, 8, 20, 11, 12), out=False)
+base = [9, 8, 20, 11, 12]
 
-ms = []
-ws = []
-first_wincons = []
-for _ in range(1000):
-    m, w = d.play_game()
+results = {}
 
-    ms.append(m)
-    ws.append(w)
-    first_wincons.append(len(w) - w[::-1].index(0) + 1)
+for i in range(10):
+    b = change(base)
+    d = Deck(config=b, out=False)
 
-nums = [first_wincons.count(i) / len(first_wincons) for i in range(1, 10)]
-print(nums)
+    ms = []
+    ws = []
+    first_wincons = []
+    for _ in range(10000):
+        m, w = d.play_game()
 
-plt.boxplot(list(zip(*ms)))
-plt.show()
+        ms.append(m)
+        ws.append(w)
+        first_wincons.append(len(w) - w[::-1].index(0) + 1)
 
-avgs = [st.mean([i[j] for i in ms]) for j in range(10)]
-print(avgs)
+    nums = [first_wincons.count(i) / len(first_wincons) for i in range(1, 10)]
+    avg_ms = [st.mean([i[j] for i in ms]) for j in range(10)]
+    avg_ws = [st.mean([i[j] for i in ws]) for j in range(10)]
 
-avgs = [st.mean([i[j] for i in ws]) for j in range(10)]
-print(avgs)
+    results[b] = (nums, avg_ms, avg_ws)
+
+print(max(results, key=lambda i: results[i][nums][3]))
