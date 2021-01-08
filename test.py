@@ -100,10 +100,12 @@ class Deck():
 
         for i in range(4):
             self.cards.append(Card(t=Type.UNTAPPER, cost=1, value=1, name="Arbor Elf"))
-            self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name="Kiora's Follower"))
-            self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name="Voyaging Satyr"))
-        r = rampers - 6
-        #for i in range(
+        r = untappers - 6
+        for name in ["Kiora's Follower", "Voyaging Satyr"]:
+            self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name=name))
+            for i in range(min(3, r)):
+                self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name=name))
+                r -= 1
 
         shuffle(self.cards)
 
