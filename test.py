@@ -78,7 +78,13 @@ class Deck():
                                 (9, -1, 'Inkwell Leviathan'),
                                 (8, -1, 'Akroma, Angel of Fury'),
                                 (8, -1, 'Zetalpa, Primal Dawn'),
-                                (9, -1, 'Void Winnower')), wincons):
+                                (9, -1, 'Void Winnower'),
+                                (8, -1, "Woodfall Primus"),
+                                (8, -1, "Sphinx of the Steel Wind"),
+                                (10, -1, "Ulamog, the Ceaseless Hunger"),
+                                (6, -1, "Terra Stomper"),
+                                (9, -1, "Iona, Shield of Emeria"),
+                                (7, -1, "Gaea's Revenge")), wincons):
             self.cards.append(Card(t=Type.WINCON, cost=i[0], value=i[1], name=i[2]))
         
         self.cards.append(Card(t=Type.RAMPER, cost=4, value=2, name="Dawn's Reflection"))
@@ -212,7 +218,7 @@ class Deck():
         return mana, wincons
     
 def change(config):
-    config[random.randrange(0, len(config))] += 1
+    config[random.randrange(0, len(config) - 1)] += 1
     config[random.randrange(0, len(config))] -= 1
     return tuple(config)
 
@@ -227,7 +233,7 @@ for i in range(10):
     ms = []
     ws = []
     first_wincons = []
-    for _ in range(10000):
+    for _ in range(1000):
         m, w = d.play_game()
 
         ms.append(m)
@@ -240,4 +246,5 @@ for i in range(10):
 
     results[b] = (nums, avg_ms, avg_ws)
 
-print(max(results, key=lambda i: results[i][nums][3]))
+    print(b)
+    print("\t", nums, "\n\t", avg_ms, "\n\t", avg_ws)
