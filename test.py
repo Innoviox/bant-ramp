@@ -58,10 +58,13 @@ class Card:
             deck.untaps += self.value
 
 class Deck():
-    def __init__(self, out=True):
+    def __init__(self, config=(), out=True):
+        self.config = config
         self.out = out
 
-    def initialize(self, wincons, rampers, lands, searchers, untappers):
+    def initialize(self):
+        wincons, rampers, lands, searchers, untappers = self.config
+        
         self.cards = []
 
         self.cards.append(Card(t=Type.WINCON, cost=8, value=-1, name="Avacyn, Angel of Hope"))
@@ -177,7 +180,7 @@ class Deck():
         return 0
 
     def play_game(self):
-        self.initialize(9, 8, 20, 11, 12)
+        self.initialize()
         self.draw(7)
 
         mana, wincons = [], []
@@ -194,7 +197,7 @@ class Deck():
     
         
 
-d = Deck(out=False)
+d = Deck(config=(9, 8, 20, 11, 12), out=False)
 
 ms = []
 ws = []
