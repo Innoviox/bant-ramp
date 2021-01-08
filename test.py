@@ -1,6 +1,6 @@
 from enum import Enum
 from dataclasses import dataclass
-from random import shuffle
+import random
 from matplotlib import pyplot as plt
 import statistics as st
 
@@ -93,17 +93,18 @@ class Deck():
         for _ in range(lands):
             self.cards.append(Card(t=Type.LAND, cost=0, value=1, name="Forest"))
 
-        self.cards.append(Card(t=Type.SEARCHER, cost=-1, value=1, name="Chord of Calling"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=-1, value=1, name="Wargate"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=4, value=2, name="Gifts Ungiven"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=4, value=2, name="Gifts Ungiven"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=4, value=2, name="Gifts Ungiven"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=4, value=2, name="Gifts Ungiven"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=2, value=1, name="Eladamri's Call"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=2, value=1, name="Signal the Clans"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=2, value=1, name="Signal the Clans"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=9, value=2, name="Tooth and Nail"))
-        self.cards.append(Card(t=Type.SEARCHER, cost=9, value=2, name="Tooth and Nail"))
+        for i in random.sample(((-1, 1, 'Chord of Calling'),
+                                (-1, 1, 'Wargate'),
+                                (4, 2, 'Gifts Ungiven'),
+                                (4, 2, 'Gifts Ungiven'),
+                                (4, 2, 'Gifts Ungiven'),
+                                (4, 2, 'Gifts Ungiven'),
+                                (2, 1, "Eladamri's Call"),
+                                (2, 1, 'Signal the Clans'),
+                                (2, 1, 'Signal the Clans'),
+                                (9, 2, 'Tooth and Nail'),
+                                (9, 2, 'Tooth and Nail')), searchers):
+            self.cards.append(Card(t=Type.SEARCHER, cost=i[0], value=i[1], name=i[2]))
 
         for i in range(4):
             self.cards.append(Card(t=Type.UNTAPPER, cost=1, value=1, name="Arbor Elf"))
@@ -114,7 +115,7 @@ class Deck():
                 self.cards.append(Card(t=Type.UNTAPPER, cost=2, value=1, name=name))
                 r -= 1
 
-        shuffle(self.cards)
+        random.shuffle(self.cards)
 
         self.wincons = 0
         self.lands = 0
