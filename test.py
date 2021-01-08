@@ -202,8 +202,7 @@ for _ in range(1000):
     ms.append(m)
     ws.append(w)
 
-    plt.plot(range(0, 10), m)
-
+plt.boxplot(list(zip(*ms)))
 plt.show()
 
 avgs = [st.mean([i[j] for i in ms]) for j in range(10)]
